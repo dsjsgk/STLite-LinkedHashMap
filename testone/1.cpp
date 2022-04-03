@@ -119,7 +119,6 @@ void tester(void) {
 }
 
 int main(void) {
-//	freopen("answer.out","w",stdout); 
 	tester();
 	std::cout << Integer::counter << std::endl;
 }
