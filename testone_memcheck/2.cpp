@@ -1,4 +1,3 @@
-//#include "linked_hashmap_std.hpp"
 #include "linked_hashmap.hpp"
 #include <iostream>
 #include <cassert>
@@ -28,7 +27,7 @@ public:
 
 int Integer::counter = 0;
 
-class Compare {
+class Equal {
 public:
 	bool operator () (const Integer &lhs, const Integer &rhs) const {
 		return lhs.val == rhs.val;
@@ -43,7 +42,7 @@ public:
 };
 void tester(void) {
 	//	test: constructor
-	sjtu::linked_hashmap<Integer, std::string,Hash,Compare> map;
+	sjtu::linked_hashmap<Integer, std::string,Hash,Equal> map;
 	//	test: empty(), size()
 	assert(map.empty() && map.size() == 0);
 	//	test: operator[], insert()
@@ -73,7 +72,7 @@ void tester(void) {
 	}
 	//	test: constructor, operator=, clear();
 	for (int i = 0; i < (int)map.size(); ++i) {
-		sjtu::linked_hashmap<Integer, std::string,Hash,Compare> copy(map);
+		sjtu::linked_hashmap<Integer, std::string,Hash,Equal> copy(map);
 		map.clear();
 		std::cout << map.size() << " " << copy.size() << " ";
 		map = copy;
@@ -88,7 +87,7 @@ void tester(void) {
 	}
 	std::cout << std::endl;
 	//	test: const_iterator, cbegin(), cend(), operator++, at()
-	sjtu::linked_hashmap<Integer, std::string,Hash,Compare>::const_iterator const_iterator;
+	sjtu::linked_hashmap<Integer, std::string,Hash,Equal>::const_iterator const_iterator;
 	const_iterator = map.cbegin();
 	while (const_iterator != map.cend()) {
 		const Integer integer(const_iterator->first);
@@ -97,10 +96,10 @@ void tester(void) {
 	}
 	std::cout << std::endl;
 	//	test: iterator, operator--, operator->
-	sjtu::linked_hashmap<Integer, std::string,Hash,Compare>::iterator iterator;
+	sjtu::linked_hashmap<Integer, std::string,Hash,Equal>::iterator iterator;
 	iterator = map.end();
 	while (true) {
-		sjtu::linked_hashmap<Integer, std::string,Hash,Compare>::iterator peek = iterator;
+		sjtu::linked_hashmap<Integer, std::string,Hash,Equal>::iterator peek = iterator;
 		if (peek == map.begin()) {
 			std::cout << std::endl;
 			break;

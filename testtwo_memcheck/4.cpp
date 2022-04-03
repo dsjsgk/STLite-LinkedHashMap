@@ -6,10 +6,13 @@
 #include <map>
 #include <ctime>
 #include "exceptions.hpp"
-//#include "linked_hashmap_std.hpp"
 #include "linked_hashmap.hpp"
 const int MAXN = 50001;
-
+const int Mod = 998244353;
+int cur = 233,base = 2333;
+inline int rand(){
+	return 1ll*cur*base%Mod;
+}
 enum Color{
 	Red, Green, Blue, Normal
 };
@@ -108,7 +111,7 @@ public:
 	}
 };
 
-struct Compare{
+struct Equal{
 	bool operator ()(const IntA &a, const IntA &b)const {
 		return a.val == b.val;
 	}
@@ -130,138 +133,112 @@ const std::vector<int> & generator(int n = MAXN) {
 	return raw;
 }
 
-//void tester1() {
-//	TestCore console("Operator [] & Iterator traverse testing...", 1, 2 * MAXN);
-//	console.init();
-//	auto ret = generator(MAXN);
-//	try{
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> stdmap;
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
-//		for (int i = 0; i < (int)ret.size(); i++) {
-//			auto x = ret[i];
-//			IntB tmp = IntB(rand());
-//			stdmap[x] = tmp;
-//			srcmap[x] = tmp;
-//			//printf("insert(%d, %d)\n", x, tmp.val);
-//			for (int c = 0; c < 10; c++) {
-//				int p = rand() % (i + 1);
-//				if (stdmap[ret[p]] != srcmap[ret[p]]) {
-//					//std::cerr << ret[p] << " ";
-//					//std::cerr << stdmap[ret[p]] << " " << srcmap[ret[p]] << std::endl;
-//					console.fail();
-//					return;
-//				}
-//			}
-//			console.showProgress();
-//		}
-//		auto itB = srcmap.cbegin();
-//		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//	} catch(...) {
-//		console.showMessage("Unknown error occured.", Blue);
-//		return;
-//	}
-//	console.pass();
-//}
+void tester1() {
+	TestCore console("Operator [] & Iterator traverse testing...", 1, 2 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			srcmap[x] = tmp;
+			for (int c = 0; c < 10; c++) {
+				int p = rand() % (i + 1);
+				std::cout<<*(srcmap[ret[p]].val)<<"\n";
+			}
+			console.showProgress();
+		}
+		for (auto itA = srcmap.begin(); itA != srcmap.end(); ++itA) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
 
-//void tester2() {
-//	TestCore console("Insertion function testing...", 2, 2 * MAXN);
-//	console.init();
-//	auto ret = generator(MAXN);
-//	try{
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> stdmap;
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
-//		for (int i = 0; i < (int)ret.size(); i++) {
-//			auto x = ret[i];
-//			IntB tmp = IntB(rand());
-//			stdmap.insert(sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			for (int c = 0; c < 10; c++) {
-//				int p = rand() % (i + 1);
-//				if (stdmap[ret[p]] != srcmap[ret[p]]) {
-//					console.fail();
-//					return;
-//				}
-//			}
-//			console.showProgress();
-//		}
-//		auto itB = srcmap.begin();
-//		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//	} catch(...) {
-//		console.showMessage("Unknown error occured.", Blue);
-//		return;
-//	}
-//	console.pass();
-//}
+void tester2() {
+	TestCore console("Insertion function testing...", 2, 2 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Equal>::value_type(x, tmp));
+			for (int c = 0; c < 10; c++) {
+				int p = rand() % (i + 1);
+				std::cout<<*(srcmap[ret[p]].val)<<"\n";
+			}
+			console.showProgress();
+		}
+		auto itB = srcmap.begin();
+		for (auto itA = srcmap.begin(); itA != srcmap.end(); ++itA) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
 
-//void tester3() {
-//	TestCore console("Deletion & Find function testing...", 3, 2 * MAXN);
-//	console.init();
-//	auto ret = generator(MAXN);
-//	try{
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> stdmap;
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
-//		for (int i = 0; i < (int)ret.size(); i++) {
-//			auto x = ret[i];
-//			IntB tmp = IntB(rand());
-//			stdmap.insert(sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			console.showProgress();
-//		}
-//		std::random_shuffle(ret.begin(), ret.end());
-//		for (auto x : ret) {
-//			if (stdmap.find(x) != stdmap.end()) {
-//				srcmap.erase(srcmap.find(x));
-//				stdmap.erase(stdmap.find(x));
-//			}
-//			for (int c = 0; c < 10; c++) {
-//				int p = rand() % ret.size();
-//				if (stdmap.find(ret[p]) != stdmap.end()) {
-//					if (stdmap[ret[p]] != srcmap[ret[p]]) {
-//						console.fail();
-//						return;
-//					}
-//				}
-//			}
-//			console.showProgress();
-//		}
-//	} catch(...) {
-//		console.showMessage("Unknown error occured.", Blue);
-//		return;
-//	}
-//	console.pass();
-//}
+void tester3() {
+	TestCore console("Deletion & Find function testing...", 3, 2 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Equal>::value_type(x, tmp));
+			console.showProgress();
+		}
+		std::random_shuffle(ret.begin(), ret.end());
+		for (auto x : ret) {
+			if (srcmap.find(x) != srcmap.end()) {
+				srcmap.erase(srcmap.find(x));
+			}
+			for (int c = 0; c < 10; c++) {
+				int p = rand() % ret.size();
+				if (srcmap.find(ret[p]) != srcmap.end()) {
+					std::cout<<p<<"\n";
+				}
+			}
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
 
 void tester4() {
 	TestCore console("Error throwing A - Invalid Iterator testing...", 4, 0);
 	console.init();
 	auto ret = generator(MAXN);
 	try{
-		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
 		++srcmap.end();
 	} catch (sjtu::exception error) {
 		try{
-			sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
+			sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
 			--srcmap.begin();
 			
 		} catch (sjtu::exception error) {
 			try{
-				sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
+				sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
 				srcmap.end()++;
 			} catch (sjtu::exception error) {
 				try{
-					sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
+					sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
 					srcmap.begin()--;
 				} catch (sjtu::exception error) {
 					console.pass();
@@ -281,19 +258,19 @@ void tester5() {
 	console.init();
 	auto ret = generator(MAXN);
 	try{
-		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
 		++srcmap.cend();
 	} catch (sjtu::exception error) {
 		try{
-			sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
+			sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
 			--srcmap.cbegin();
 		} catch (sjtu::exception error) {
 			try{
-				sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
+				sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
 				srcmap.cend()++;
 			} catch (sjtu::exception error) {
 				try{
-					sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
+					sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
 					srcmap.cbegin()--;
 				} catch (sjtu::exception error) {
 					console.pass();
@@ -313,13 +290,13 @@ void tester6() {
 	console.init();
 	auto ret = generator(MAXN);
 	try{
-		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
 		for (auto x : ret) {
 			srcmap[x] = IntB(rand());
 			console.showProgress();
 		}
 		try{
-			sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
+			sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
 			srcmap.at(IntA(-1)) = IntB(2);
 		} catch (...) {
 			console.pass();
@@ -332,300 +309,226 @@ void tester6() {
 	console.fail();
 }
 
-//void tester7() {
-//	const int MAXC = MAXN / 2;
-//	TestCore console("Copy constructure testing...", 7, MAXN + MAXC + 2 * (MAXN - MAXC));
-//	console.init();
-//	auto ret = generator(MAXN);
-//	try{
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> stdmap;
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
-//		for (int i = 0; i < (int)ret.size(); i++) {
-//			auto x = ret[i];
-//			IntB tmp = IntB(rand());
-//			stdmap.insert(sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			console.showProgress();
-//		}
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> tmp1(stdmap);
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> tmp2(srcmap);
-//		std::random_shuffle(ret.begin(), ret.end());
-//		for (int i = 0; i < MAXC; i++) {
-//			if (stdmap.find(ret[i]) != stdmap.end()) {
-//				srcmap.erase(srcmap.find(ret[i]));
-//				stdmap.erase(stdmap.find(ret[i]));
-//			}
-//			console.showProgress();
-//		}
-//		auto itB = srcmap.begin();
-//		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//		
-//		itB = tmp2.begin();
-//		for (auto itA = tmp1.begin(); itA != tmp1.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//	} catch(...) {
-//		console.showMessage("Unknown error occured.", Blue);
-//		return;
-//	}
-//	console.pass();
-//}
+void tester7() {
+	const int MAXC = MAXN / 2;
+	TestCore console("Copy constructure testing...", 7, MAXN + MAXC + 2 * (MAXN - MAXC));
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Equal>::value_type(x, tmp));
+			console.showProgress();
+		}
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> tmp2(srcmap);
+		std::random_shuffle(ret.begin(), ret.end());
+		for (int i = 0; i < MAXC; i++) {
+			if (srcmap.find(ret[i]) != srcmap.end()) {
+				srcmap.erase(srcmap.find(ret[i]));
+			}
+			console.showProgress();
+		}
+		for (auto itA = srcmap.begin(); itA != srcmap.end(); ++itA) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+		for (auto itA = tmp2.begin(); itA != tmp2.end(); ++itA) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
 
-//void tester8() {
-//	const int MAXC = MAXN / 2;
-//	TestCore console("Operator = testing...", 8, MAXN + MAXC + 2 * (MAXN - MAXC));
-//	console.init();
-//	auto ret = generator(MAXN);
-//	try{
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> stdmap;
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
-//		for (int i = 0; i < (int)ret.size(); i++) {
-//			auto x = ret[i];
-//			IntB tmp = IntB(rand());
-//			stdmap.insert(sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			console.showProgress();
-//		}
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> tmp1;
-//		tmp1 = stdmap;
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> tmp2;
-//		tmp2 = srcmap;
-//		std::random_shuffle(ret.begin(), ret.end());
-//		for (int i = 0; i < MAXC; i++) {
-//			if (stdmap.find(ret[i]) != stdmap.end()) {
-//				srcmap.erase(srcmap.find(ret[i]));
-//				stdmap.erase(stdmap.find(ret[i]));
-//			}
-//			console.showProgress();
-//		}
-//		auto itB = srcmap.cbegin();
-//		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//		
-//		itB = tmp2.cbegin();
-//		for (auto itA = tmp1.begin(); itA != tmp1.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//	} catch(...) {
-//		console.showMessage("Unknown error occured.", Blue);
-//		return;
-//	}
-//	console.pass();
-//}
+void tester8() {
+	const int MAXC = MAXN / 2;
+	TestCore console("Operator = testing...", 8, MAXN + MAXC + 2 * (MAXN - MAXC));
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Equal>::value_type(x, tmp));
+			console.showProgress();
+		}
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> tmp2;
+		tmp2 = srcmap;
+		std::random_shuffle(ret.begin(), ret.end());
+		for (int i = 0; i < MAXC; i++) {
+			if (srcmap.find(ret[i]) != srcmap.end()) {
+				srcmap.erase(srcmap.find(ret[i]));
+			}
+			console.showProgress();
+		}
+		for (auto itA = srcmap.begin(); itA != srcmap.end(); ++itA) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+		
+		for (auto itA = tmp2.begin(); itA != tmp2.end(); ++itA) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
 
-//void tester9() {
-//	TestCore console("At function testing...", 9, 2 * MAXN);
-//	console.init();
-//	auto ret = generator(MAXN);
-//	try{
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> stdmap;
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
-//		for (int i = 0; i < (int)ret.size(); i++) {
-//			auto x = ret[i];
-//			IntB tmp = IntB(rand());
-//			stdmap[x] = tmp;
-//			srcmap[x] = tmp;
-//			for (int c = 0; c < 10; c++) {
-//				int p = rand() % (i + 1);
-//				if (stdmap.at(ret[p]) != srcmap.at(ret[p])) {
-//					console.fail();
-//					return;
-//				}
-//				tmp = IntB(rand());
-//				stdmap.at(ret[p]) = tmp;
-//				srcmap.at(ret[p]) = tmp;
-//			}
-//			console.showProgress();
-//		}
-//		auto itB = srcmap.cbegin();
-//		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//	} catch(...) {
-//		console.showMessage("Unknown error occured.", Blue);
-//		return;
-//	}
-//	console.pass();
-//}
+void tester9() {
+	TestCore console("At function testing...", 9, 2 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			srcmap[x] = tmp;
+			for (int c = 0; c < 10; c++) {
+				int p = rand() % (i + 1);
+				std::cout<<*(srcmap.at(ret[p]).val)<<"\n";
+				tmp = IntB(rand());
+				srcmap.at(ret[p]) = tmp;
+			}
+			console.showProgress();
+		}
+		auto itB = srcmap.cbegin();
+		for (auto itA = srcmap.begin(); itA != srcmap.end(); ++itA) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
 
-//void tester10() {
-//	TestCore console("Objects' independence testing...", 10, 6 * MAXN);
-//	console.init();
-//	auto ret = generator(MAXN);
-//	try{
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> stdmap;
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
-//		for (int i = 0; i < (int)ret.size(); i++) {
-//			auto x = ret[i];
-//			IntB tmp = IntB(rand());
-//			stdmap.insert(sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			console.showProgress();
-//		}
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> std1(stdmap), std2;
-//		std2 = std1 = std1;
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> src1(srcmap), src2;
-//		src2 = src1 = src1;
-//		for (int i = 0; i < (int)ret.size(); i++) {
-//			if (stdmap.find(ret[i]) != stdmap.end()) {
-//				srcmap.erase(srcmap.find(ret[i]));
-//				stdmap.erase(stdmap.find(ret[i]));
-//			}
-//			console.showProgress();
-//		}
-//		ret = generator(MAXN);
-//		for (int i = 0; i < (int)ret.size(); i++) {
-//			auto x = ret[i];
-//			IntB tmp = IntB(rand());
-//			std1.insert(sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			src1.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Compare>::value_type(x, tmp));
-//			console.showProgress();
-//		}
-//		
-//		auto itB = srcmap.begin();
-//		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//		
-//		itB = src1.begin();
-//		for (auto itA = std1.begin(); itA != std1.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//		
-//		itB = src2.begin();
-//		for (auto itA = std2.begin(); itA != std2.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//	} catch(...) {
-//		console.showMessage("Unknown error occured.", Blue);
-//		return;
-//	}
-//	console.pass();
-//}
+void tester10() {
+	TestCore console("Objects' independence testing...", 10, 6 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Equal>::value_type(x, tmp));
+			console.showProgress();
+		}
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> src1(srcmap), src2;
+		src2 = src1 = src1;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			if (srcmap.find(ret[i]) != srcmap.end()) {
+				srcmap.erase(srcmap.find(ret[i]));
+			}
+			console.showProgress();
+		}
+		ret = generator(MAXN);
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			src1.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Equal>::value_type(x, tmp));
+			console.showProgress();
+		}
+		
+		for (auto itA = srcmap.begin(); itA != srcmap.end(); ++itA) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+		
+		for (auto itA = src1.begin(); itA != src1.end(); ++itA) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+		
+		for (auto itA = src2.begin(); itA != src2.end(); ++itA) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
 
-//void tester11() {
-//	const int MAXN = 100001;
-//	TestCore console("Comprehensive testing...", 11, 3 * MAXN);
-//	console.init();
-//	auto ret = generator(MAXN);
-//	try{
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare> stdmap;
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare> srcmap;
-//		for (int i = 0, cnt = 0; i < (int)ret.size(); i++, cnt++) {
-//			int tmp = rand();
-//			auto retA = stdmap.insert(sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare>::value_type(IntA(ret[i]), IntB(tmp)));
-//			auto retB = srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Compare>::value_type(IntA(ret[i]), IntB(tmp)));
-//			console.showProgress();
-//			if (!retA.second) {
-//				cnt--;
-//				ret[i] = -1;
-//				console.showProgress();
-//				continue;
-//			}
-//			if (rand() % 100 < 12 && cnt > 0) {
-//				int p = 0;
-//				while (ret[p] < 0) {
-//					p = rand() % (i + 1);
-//				}
-//				stdmap.erase(stdmap.find(ret[p]));
-//				srcmap.erase(srcmap.find(ret[p]));
-//				ret[p] = -1;
-//				cnt++;
-//				console.showProgress();
-//			}
-//			if (stdmap.size() != srcmap.size()) {
-//				console.fail();
-//				return;
-//			}
-//		}
-//		auto itB = srcmap.cbegin();
-//		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
-//			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
-//				console.fail();
-//				return;
-//			}
-//			console.showProgress();
-//		}
-//		
-//		const auto stdtmp(stdmap);
-//		const auto srctmp(srcmap);
-//		
-//		sjtu::linked_hashmap_std<IntA, IntB, Hash,Compare>::const_iterator citA = stdtmp.cbegin();
-//		sjtu::linked_hashmap<IntA, IntB, Hash,Compare>::const_iterator citB = srctmp.cbegin();
-//		
-//		stdtmp.size();
-//		srctmp.size();
-//		
-//		for (auto x : ret) {
-//			if (x >= 0) {
-//				if (stdmap.at(x) != srcmap.at(x)) {
-//					console.fail();
-//					return;
-//				}
-//				if (srctmp.count(x) == 0) {
-//					console.fail();
-//					return;
-//				}
-//			}
-//			console.showProgress();
-//		}
-//	} catch(...) {
-//		console.showMessage("Unknown error occured.", Blue);
-//		return;
-//	}
-//	console.pass();
-//}
+void tester11() {
+	const int MAXN = 100001;
+	TestCore console("Comprehensive testing...", 11, 3 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal> srcmap;
+		for (int i = 0, cnt = 0; i < (int)ret.size(); i++, cnt++) {
+			int tmp = rand();
+			auto retB = srcmap.insert(sjtu::linked_hashmap<IntA, IntB, Hash,Equal>::value_type(IntA(ret[i]), IntB(tmp)));
+			console.showProgress();
+			if (!retB.second) {
+				cnt--;
+				ret[i] = -1;
+				console.showProgress();
+				continue;
+			}
+			if (rand() % 100 < 12 && cnt > 0) {
+				int p = 0;
+				while (ret[p] < 0) {
+					p = rand() % (i + 1);
+				}
+				srcmap.erase(srcmap.find(ret[p]));
+				ret[p] = -1;
+				cnt++;
+				console.showProgress();
+			}
+			std::cout<<srcmap.size()<<"\n";
+		}
+		for (auto itA = srcmap.begin(); itA != srcmap.end(); ++itA ) {
+			std::cout<<(itA -> first).val<<"\n";
+			console.showProgress();
+		}
+		
+		const auto srctmp(srcmap);
+		
+		sjtu::linked_hashmap<IntA, IntB, Hash,Equal>::const_iterator citB = srctmp.cbegin();
+		
+		srctmp.size();
+		
+		for (auto x : ret) {
+			if (x >= 0) {
+				std::cout<<*(srcmap.at(x).val)<<"\n";
+			}
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
 
 int main() {
-//	freopen("3.out","w",stdout); 
 #ifdef SPECIAL
 	puts("AATree-Map Checker Version 1.2");
 #endif
-//	tester1();
-//	tester2();
-//	tester3();
+	tester1();
+	tester2();
+	tester3();
 	tester4();
 	tester5();
 	tester6();
-//	tester7();
-//	tester8();
-//	tester9();
-//	tester10();
-//	tester11();
+	tester7();
+	tester8();
+	tester9();
+	tester10();
+	tester11();
 	return 0;
 }

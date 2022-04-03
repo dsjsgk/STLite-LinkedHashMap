@@ -2,7 +2,6 @@
 #include<cstdio>
 #include<algorithm>
 #include<cstring>
-//#include "linked_hashmap_std.hpp"
 #include "linked_hashmap.hpp"
 long long aa=13131,bb=5353,MOD=(long long)(1e9+7),now=1;
 int rand()
@@ -239,8 +238,6 @@ void test_iterator()
 	}
 }
 int main(){
-//	freopen("answer.ans","w",stdout);
-	
 	test_insert();
 	test_erase();
 	test_const_at();

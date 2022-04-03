@@ -1,4 +1,3 @@
-//#include "linked_hashmap_std.hpp"
 #include "linked_hashmap.hpp"
 #include <iostream>
 #include <cassert>
@@ -59,8 +58,6 @@ void tester(void) {
 			auto result = map.insert(sjtu::pair<Integer, std::string>(Integer(i), string));
 			assert(result.second);
 		}
-//		if(i%10000==0)
-//		std::cerr<<i<<"\n";
 	}
 	int counter = 0;
 	for (int time = 0; time <= 30; time++) {
@@ -90,7 +87,6 @@ void tester(void) {
 }
 
 int main(void) {
-//	freopen("answer.ans","w",stdout);
 	std::ios::sync_with_stdio(false);
 	std::cin.tie(0);
 	std::cout.tie(0);

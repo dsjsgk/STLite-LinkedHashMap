@@ -1,4 +1,3 @@
-//#include "linked_hashmap_std.hpp"
 #include "linked_hashmap.hpp"
 #include <iostream>
 #include <cassert>
@@ -69,7 +68,6 @@ void tester(void) {
 }
 
 int main(void) {
-//	freopen("answer.out","w",stdout);
 	std::ios::sync_with_stdio(false);
 	std::cin.tie(0);
 	std::cout.tie(0);
