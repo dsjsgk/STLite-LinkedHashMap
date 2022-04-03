@@ -51,9 +51,7 @@ bool check2(){//Q.insert
 	for(int i = 1; i <= 100; i++) swap(num[rand() % 50 + 1], num[rand() % 50 + 1]);
 	for(int i = 1; i <= 50; i++) Q[num[i]] = rand();
 	int p = Q[6];
-//	cerr<<"a"; 
 	if(Q.insert(sjtu::linked_hashmap<int, int>::value_type(6, 9)).second) return 0;
-//	cerr<<"a";
 	it = Q.insert(sjtu::pair<int, int>(6, 9)).first;
 	
 	if(it -> second != Q[6]) return 0;
