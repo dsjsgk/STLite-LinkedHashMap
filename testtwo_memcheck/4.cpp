@@ -516,9 +516,6 @@ void tester11() {
 }
 
 int main() {
-#ifdef SPECIAL
-	puts("AATree-Map Checker Version 1.2");
-#endif
 	tester1();
 	tester2();
 	tester3();
