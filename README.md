@@ -24,7 +24,7 @@
 
 ### * 分数构成
 
-####  OJ分数+20% CodeReview
+####  80% OJ分数 + 20% CodeReview
 
 
 
