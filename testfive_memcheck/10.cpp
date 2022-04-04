@@ -28,7 +28,7 @@ public:
 
 int Integer::counter = 0;
 
-class Compare {
+class Equal {
 public:
 	bool operator () (const Integer &lhs, const Integer &rhs) const {
 		return lhs.val ==rhs.val;
@@ -43,7 +43,7 @@ public:
 
 void tester(void) {
 	
-	sjtu::linked_hashmap<Integer, std::string,Hash,Compare> map;
+	sjtu::linked_hashmap<Integer, std::string,Hash,Equal> map;
 	for (int i = 0; i < 100000; ++i) {
 		std::string string = "";
 		for (int number = i; number; number /= 10) {
@@ -61,7 +61,7 @@ void tester(void) {
 	}
 	int counter = 0;
 	for (int time = 0; time <= 30; time++) {
-		sjtu::linked_hashmap<Integer, std::string,Hash,Compare>::const_iterator const_iterator;
+		sjtu::linked_hashmap<Integer, std::string,Hash,Equal>::const_iterator const_iterator;
 		const_iterator = map.cbegin();
 		while (const_iterator != map.cend()) {
 			const Integer integer(const_iterator->first);
@@ -70,7 +70,7 @@ void tester(void) {
 			}
 			const_iterator++;
 		}
-		sjtu::linked_hashmap<Integer, std::string,Hash,Compare>::iterator iterator;
+		sjtu::linked_hashmap<Integer, std::string,Hash,Equal>::iterator iterator;
 		iterator = map.begin();
 		while (iterator != map.end()) {
 			const Integer integer(iterator->first);
