@@ -28,7 +28,7 @@ public:
 
 int Integer::counter = 0;
 
-class Compare {
+class Equal {
 public:
 	bool operator () (const Integer &lhs, const Integer &rhs) const {
 		return lhs.val ==rhs.val;
@@ -48,7 +48,7 @@ inline int getNum() {
 }
 void tester(void) {
 	
-	sjtu::linked_hashmap<Integer,int,Hash,Compare> map;
+	sjtu::linked_hashmap<Integer,int,Hash,Equal> map;
 	for(int i=0;i<1000;++i) {
 		for(int j=0;j<10000;++j) {
 			if(!map.count(Integer(getNum()))) {
@@ -57,7 +57,7 @@ void tester(void) {
 			}
 		}
 		int ans=0;
-		sjtu::linked_hashmap<Integer,int,Hash,Compare>::iterator it= map.begin();
+		sjtu::linked_hashmap<Integer,int,Hash,Equal>::iterator it= map.begin();
 		while(it!=map.end()) {
 			ans+=it->second;
 			++it; 
